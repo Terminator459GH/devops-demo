@@ -1,0 +1,6 @@
+﻿INFO: Application started
+ERROR: Database connection failed
+INFO: Retrying connection
+WARN: High memory usage
+ERROR: Failed to save data
+INFO: Operation completed

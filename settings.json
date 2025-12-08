@@ -1,8 +1,0 @@
-{
-    "go.testFlags": ["-v"],
-    "go.testTimeout": "30s",
-    "go.coverOnSave": true,
-    "go.testOnSave": true,
-    "testExplorer.useNativeTesting": false,
-    "testExplorer.addToEditorContextMenu": true
-}

@@ -16,6 +16,56 @@ def read_log_file(log_file):
         print(f"❌ ERROR: Неожиданная ошибка при чтении файла: {e}")
         return []
 
+def analyze_timestamps(lines):
+    """Анализирует временные метки в логах"""
+    print(f"🔍 DEBUG: Анализирую временные метки в {len(lines)} строках")
+    
+    import re
+    from datetime import datetime
+    
+    timestamps = []
+    timestamp_pattern = r'\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}'
+    
+    for line in lines:
+        match = re.search(timestamp_pattern, line)
+        if match:
+            try:
+                timestamp_str = match.group(0)
+                timestamp = datetime.strptime(timestamp_str, '%Y-%m-%d %H:%M:%S')
+                timestamps.append(timestamp)
+            except ValueError:
+                continue
+    
+    if timestamps:
+        earliest = min(timestamps)
+        latest = max(timestamps)
+        duration = latest - earliest
+        
+        print(f"📅 Временной диапазон логов:")
+        print(f"   Начало: {earliest.strftime('%Y-%m-%d %H:%M:%S')}")
+        print(f"   Конец: {latest.strftime('%Y-%m-%d %H:%M:%S')}")
+        print(f"   Длительность: {duration}")
+        print(f"   Всего записей с timestamp: {len(timestamps)}")
+    else:
+        print("⚠️  Не найдено временных меток в логах")
+    
+    return timestamps
+
+def find_busiest_hour(timestamps):
+    """Находит самый загруженный час по логам"""
+    if not timestamps:
+        return None
+    
+    hours = [ts.hour for ts in timestamps]
+    from collections import Counter
+    hour_counts = Counter(hours)
+    
+    busiest_hour, count = hour_counts.most_common(1)[0]
+    
+    print(f"🏆 Самый загруженный час: {busiest_hour}:00")
+    print(f"   Количество событий в этот час: {count}")
+    
+    return busiest_hour
 
 def count_errors(lines):
     """Подсчитывает количество строк с ошибками"""
@@ -31,6 +81,19 @@ def count_errors(lines):
     print(f"✅ DEBUG: Найдено ошибок: {errors}")
     return errors
 
+def count_warnings(lines):
+    """Подсчитывает количество предупреждений в логах"""
+    print(f"🔍 DEBUG: Ищу предупреждения в {len(lines)} строках")
+    
+    warnings = 0
+    for i, line in enumerate(lines, 1):
+        line_upper = line.upper()
+        if "WARN" in line_upper or "WARNING" in line_upper:
+            warnings += 1
+            print(f"   ⚠️  Найдено предупреждение в строке {i}: {line.strip()}")
+    
+    print(f"✅ DEBUG: Найдено предупреждений: {warnings}")
+    return warnings
 
 def analyze_error_logs(log_file="app.log"):
     """Основная функция анализа логов"""
@@ -40,17 +103,37 @@ def analyze_error_logs(log_file="app.log"):
     
     if not lines:
         print("⚠️  ВНИМАНИЕ: Файл пуст или не может быть прочитан")
-        return 0
+        return {"errors": 0, "warnings": 0, "timestamps": []}
     
     errors = count_errors(lines)
-    print(f"📊 ИТОГ: Всего ошибок найдено: {errors}")
+    warnings = count_warnings(lines)
     
-    # Добавим простую статистику
+    # НОВАЯ ФУНКЦИОНАЛЬНОСТЬ: анализ временных меток
+    timestamps = analyze_timestamps(lines)
+    if timestamps:
+        busiest_hour = find_busiest_hour(timestamps)
+    
+    print("=" * 50)
+    print(f"📊 ИТОГОВАЯ СТАТИСТИКА:")
+    print(f"   Всего строк в файле: {len(lines)}")
+    print(f"   Ошибок (ERROR): {errors}")
+    print(f"   Предупреждений (WARN): {warnings}")
+    
+    if timestamps:
+        print(f"   Записей с временными метками: {len(timestamps)}")
+    
     if lines:
         error_percentage = (errors / len(lines)) * 100
+        warning_percentage = (warnings / len(lines)) * 100
         print(f"📈 Процент ошибок: {error_percentage:.1f}%")
+        print(f"📈 Процент предупреждений: {warning_percentage:.1f}%")
     
-    return errors
+    return {
+        "errors": errors, 
+        "warnings": warnings, 
+        "timestamps": timestamps,
+        "total_lines": len(lines)
+    }
 
 
 if __name__ == "__main__":

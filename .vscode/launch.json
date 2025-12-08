@@ -1,0 +1,31 @@
+{
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "🚀 Launch Go Server",
+            "type": "go",
+            "request": "launch",
+            "mode": "auto",
+            "program": "${workspaceFolder}",
+            "console": "integratedTerminal",
+            "args": [],
+            "showLog": true
+        },
+        {
+            "name": "🐛 Debug Test",
+            "type": "go",
+            "request": "launch",
+            "mode": "test",
+            "program": "${workspaceFolder}",
+            "console": "integratedTerminal"
+        },
+        {
+            "name": "🔍 Debug Current File",
+            "type": "go",
+            "request": "launch",
+            "mode": "debug",
+            "program": "${fileDirname}",
+            "console": "integratedTerminal"
+        }
+    ]
+}

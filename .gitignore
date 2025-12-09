@@ -6,26 +6,25 @@ __pycache__/
 *.pyd
 *.pyo
 
-# Go
+# Go временные файлы
 *.exe
 *.exe~
-*.dll
-*.so
-*.dylib
-bin/
-pkg/
+__debug_bin*          # ← ДЛЯ __debug_bin.exe623822162
+*.test.exe
 
-# IDE
-.vscode/
+# IDE и конфигурации
+.vscode/               # ← УЖЕ ЕСТЬ, но на всякий случай
+.settings/             # ← ДОБАВИТЬ
+settings.json          # ← ДЛЯ settings.json
 .idea/
 *.swp
 *.swo
 *~
 
+# Системные файлы
+.DS_Store
+Thumbs.db
+
 # Логи
 *.log
 logs/
-
-# Временные файлы
-.DS_Store
-Thumbs.db

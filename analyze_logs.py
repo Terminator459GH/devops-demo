@@ -17,20 +17,22 @@ def read_log_file(log_file):
         return []
 
 def analyze_timestamps(lines):
-    """Анализирует временные метки в логах"""
-    print(f"🔍 DEBUG: Анализирую временные метки в {len(lines)} строках")
+    """УЛУЧШЕННАЯ ВЕРСИЯ: Анализирует временные метки с детализацией"""
+    print(f"🔍 DEBUG: Расширенный анализ временных меток в {len(lines)} строках")
     
     import re
     from datetime import datetime
+    from collections import Counter
     
     timestamps = []
-    timestamp_pattern = r'\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}'
+    date_pattern = r'(\d{4}-\d{2}-\d{2}) (\d{2}:\d{2}:\d{2})'
     
     for line in lines:
-        match = re.search(timestamp_pattern, line)
+        match = re.search(date_pattern, line)
         if match:
             try:
-                timestamp_str = match.group(0)
+                date_str, time_str = match.groups()
+                timestamp_str = f"{date_str} {time_str}"
                 timestamp = datetime.strptime(timestamp_str, '%Y-%m-%d %H:%M:%S')
                 timestamps.append(timestamp)
             except ValueError:
@@ -41,11 +43,18 @@ def analyze_timestamps(lines):
         latest = max(timestamps)
         duration = latest - earliest
         
-        print(f"📅 Временной диапазон логов:")
+        # НОВОЕ: Анализ по дням
+        days = [ts.date() for ts in timestamps]
+        day_counts = Counter(days)
+        busiest_day, day_count = day_counts.most_common(1)[0]
+        
+        print(f"📅 РАСШИРЕННЫЙ АНАЛИЗ ВРЕМЕННЫХ МЕТОК:")
         print(f"   Начало: {earliest.strftime('%Y-%m-%d %H:%M:%S')}")
         print(f"   Конец: {latest.strftime('%Y-%m-%d %H:%M:%S')}")
         print(f"   Длительность: {duration}")
-        print(f"   Всего записей с timestamp: {len(timestamps)}")
+        print(f"   Всего записей: {len(timestamps)}")
+        print(f"   Самый активный день: {busiest_day} ({day_count} событий)")
+        print(f"   Уникальных дней: {len(day_counts)}")
     else:
         print("⚠️  Не найдено временных меток в логах")
     

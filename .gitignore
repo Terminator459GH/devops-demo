@@ -9,7 +9,8 @@ __pycache__/
 # Go временные файлы
 *.exe
 *.exe~
-__debug_bin*          # ← ДЛЯ __debug_bin.exe623822162
+__debug_bin.exe623822162
+__debug_bin.exe       
 *.test.exe
 
 # IDE и конфигурации

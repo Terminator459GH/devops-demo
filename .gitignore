@@ -14,9 +14,10 @@ __debug_bin.exe
 *.test.exe
 
 # IDE и конфигурации
-.vscode/               # ← УЖЕ ЕСТЬ, но на всякий случай
-.settings/             # ← ДОБАВИТЬ
-settings.json          # ← ДЛЯ settings.json
+.vscode/               
+.settings/             
+settings.json
+launch.json          
 .idea/
 *.swp
 *.swo

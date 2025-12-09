@@ -104,11 +104,11 @@ def count_warnings(lines):
     print(f"✅ DEBUG: Найдено предупреждений: {warnings}")
     return warnings
 
-def analyze_error_logs(log_file="app.log"):
+def analyze_error_logs(filename="app.log"):
     """Основная функция анализа логов"""
-    print(f"🚀 ЗАПУСК: Анализ файла {log_file}")
+    print(f"🚀 STARTING: ANALYZE FILE {filename}")
     
-    lines = read_log_file(log_file)
+    lines = read_log_file(filename)
     
     if not lines:
         print("⚠️  ВНИМАНИЕ: Файл пуст или не может быть прочитан")

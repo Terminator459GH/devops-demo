@@ -106,7 +106,7 @@ def count_warnings(lines):
 
 def analyze_error_logs(log_file="app.log"):
     """Основная функция анализа логов"""
-    print(f"🚀 ЗАПУСК: Анализ файла {log_file}")
+    print(f"🚀 ЗАПУСК ФУНКЦИИ: Анализ файла {log_file}")
     
     lines = read_log_file(log_file)
     
